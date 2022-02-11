@@ -1,0 +1,53 @@
+<div id="user-nav" [class]="styleNav">
+    <div id="user-data">
+        <div *ngIf="bell" id="tofitications-push">
+            <button [class]="{'active-bell' : bell}" (click)="styleNotificationP = !styleNotificationP" class="btn" title="Notificaciones"><i class="fas fa-bell"></i></button>
+            <div [class]="styleNotificationP ? 'notificaction-list-show' : 'notificaction-list-hide'" id="notificaction-list" class="scroll">
+                <div *ngFor="let item of notficationList" class="item">
+                    <span class="title">{{item.title}}</span>
+                    <small class="message">{{item.message}}</small>
+                </div>
+            </div>
+        </div>
+        <i class="fas fa-user-tie"></i>
+        <small>{{userData.full_name}}</small>
+    </div>
+    <div id="notification">
+        <div [class]="styleLoading" class="lds-ellipsis">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div id="message">
+            <div [class]="[typeNotification, styleNotification]">
+                <small>
+                    <i *ngIf="typeNotification == 'm-error'" class="fas fa-bug"></i>
+                    <i *ngIf="typeNotification == 'm-success'" class="far fa-smile"></i>
+                    {{notfication}}
+                </small>
+            </div>
+            <button><i class="fas fa-robot"></i></button>
+        </div>
+    </div>
+    <div id="report">
+        <small *ngIf="message != ''"><i class="fas fa-bug"></i> {{message}}</small>
+        <ng-container *ngIf="message == ''">
+            <div title="Entrantes" class="item">
+                <small class="title">E:</small>
+                <small class="value">{{report.incoming}}</small>
+            </div>
+            <div title="Resueltos" class="item">
+                <small class="title">R:</small>
+                <small class="value">{{report.resolved}}</small>
+            </div>
+            <div title="Nivel de servicio" class="item">
+                <small class="title">NS:</small>
+                <small class="value">{{ns}}%</small>
+            </div>
+            <div [class]="indicator" class="in">
+                <i class="fas fa-arrow-up"></i>
+            </div>
+        </ng-container>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+<div class="login-image-gallery">
+    <div class="gallery" [class]="galleryItem">
+        <div class="item-1">
+            <img src="../../../assets/images/login1.png">
+        </div>
+        <div class="item-2">
+            <img src="../../../assets/images/login.png">
+        </div>
+        <div class="item-3">
+            <img src="../../../assets/images/otrs.png">
+        </div>
+        <div class="item-4">
+            <img src="../../../assets/images/ticket.png">
+        </div>
+    </div>
+    <div class="login">
+        <strong class="title">INICIAR SESIÓN</strong>
+        <form [formGroup]="loginForm" (ngSubmit)="Verify()">
+            <div class="form-control-i">
+                <input formControlName="userLogin" id="userName" name="userName" type="text"
+                    placeholder="nombre de usuario">
+                <label for="userName"><i class="fas fa-user"></i></label>
+            </div>
+            <div class="form-control-i">
+                <input formControlName="password" id="password" name="password" type="password"
+                    placeholder="contraseña">
+                <label for="userName"><i class="fas fa-key"></i></label>
+            </div>
+            <button title="Iniciar sesión" [disabled]="styleBtnLoading == 'btn-no-loading' && !loginForm.valid" [class]="styleBtnLoading" class="btn-verify"><i class="fas fa-sign-in-alt"></i></button>
+        </form>
+        <div class="login-message scroll" [ngClass]="styleLoadinMessage">
+            <span>{{message}}</span>
+        </div>
+    </div>
+</div>

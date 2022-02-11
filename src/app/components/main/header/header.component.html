@@ -1,0 +1,28 @@
+<header [class]="styleHeader">
+    <div class="nav">
+        <a title="coordinadora" href="https://www.coordinadora.com/" target="_blank" id="logo">
+            <img id="logo1" src="../../../../assets/icons/coordinadora.png">
+            <img id="logo2" src="../../../../assets/icons/mi-coordinadora.png">
+        </a>
+        <a title="Inicio" (click)="option=0" [ngClass]="{'active': option == 0}" [routerLink]="['/home']">
+            <i class="fas fa-home"></i>
+            <span>Inicio</span>
+        </a>
+        <a *ngFor="let item of access" (click)="option=item.id" [title]="item.name"
+            [ngClass]="{'active': option == item.id}" [routerLink]="[item.url]">
+            <i [class]="item.icon"></i>
+            <span>{{item.name}}</span>
+            <small *ngIf="item.id == 1 && chatN" class="new"></small>
+        </a>
+    </div>
+    <div class="nav">
+        <a title="Ir a la mesa" href="http://161.35.62.68/otrs/index.pl?" target="_blank">
+            <img src="../../../../assets/images/otrs.png">
+            <span>Ir a la mesa</span>
+        </a>
+        <button (click)="Logout()" title="Cerrar sesión">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Cerrar sesión</span>
+        </button>
+    </div>
+</header>

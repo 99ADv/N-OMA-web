@@ -1,0 +1,49 @@
+<div class="main-container">
+    <div class="main-content">
+        <div class="page-header">
+            <div id="title">
+                <div class="page-title">
+                    <div>
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <small class="page-name">Agentes</small>
+                </div>
+            </div>
+        </div>
+        <div class="section-body">
+            <div class="list-main">
+                <div (click)="item_ = item; AssignAccess()" *ngFor="let item of agents" class="item">
+                    <div class="i-body">
+                        <span class="name">{{item.full_name}}</span>
+                        <div class="list-objects">
+                            <small class="item" *ngFor="let item2 of item.access">
+                                <i title="{{item2.name}}" [class]="item2.icon"></i>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div [class]="{'item-data-show' : item_.id !=  0}" class="item-data">
+                <div class="entity-data">
+                    <div class="ed-header">
+                        <strong class="title">Agente</strong>
+                        <button (click)="ClearForm()" class="closed"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="label">
+                        <small>Nombre:</small>
+                        <span class="name">{{item_.full_name}}</span>
+                    </div>
+                    <div class="label">
+                        <small>Accesos:</small>
+                        <div class="access-list scroll">
+                            <button (click)="Asing(item)" [class]="{'access-active' : item.active}" class="item" *ngFor="let item of access">
+                                <i [class]="item.icon"></i>
+                                <span>{{item.name}}</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

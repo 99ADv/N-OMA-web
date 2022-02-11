@@ -1,0 +1,200 @@
+.main-container {
+    width: 180vh;
+
+    left: 215px;
+
+    .main-content {
+        overflow: hidden;
+    }
+}
+
+.list-main {
+    width: 100%;
+    max-height: 100%;
+
+    .item {
+        cursor: pointer;
+
+        position: relative;
+
+        .fa-lock {
+            font-size: 13px;
+            color: rgba(0, 0, 0, 0.308);
+            
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+        }
+    }
+}
+
+.entity-select {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: .1em;
+
+    .es-header {
+        width: 100%;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        button {
+            color: #0072BC;
+            // color: white;
+
+            border-radius: 100px;
+        }
+    }
+
+    .es-list {
+        width: 100%;
+        max-height: 200px;
+
+        border: 1px solid rgba(128, 128, 128, 0.164);
+
+        overflow: auto;
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: .5em;
+
+        .item {
+            background: rgba(218, 218, 218, 0.123);
+            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.205);
+
+            border-radius: 5px;
+            
+            overflow: hidden;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+
+            &:hover {
+                button {
+                    width: 20px;
+                }
+            }
+
+            button {
+                width: 20px;
+                height: 20px;
+
+                background: rgba(177, 177, 177, 0.836);
+                color: white;
+                font-size: 10px;
+
+                overflow: hidden;
+                padding: 0%;
+            }
+            
+            small {
+                padding: 0px 5px;
+            }
+        }
+    }
+}
+
+.modal {
+    .modal-content {
+        width: 300px;
+        height: 90%;
+
+        background: white;
+        box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.507);
+
+        border-radius: 5px;
+
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+
+        .a-header {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+
+            button {
+                width: 25px;
+                height: 25px;
+
+                background: rgba(148, 148, 148, 0.137);
+                color: rgba(0, 0, 0, 0.733);
+
+                border-radius: 100px;
+            }
+        }
+
+        .a-list {
+            height: 90%;
+
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+
+            .item {
+                width: 100%;
+
+                border-bottom: 1px solid rgba(0, 0, 0, 0.233);
+                padding: 10px 5px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: .5em;
+
+                &:hover {
+                    background: #00a9e61c;
+                    
+                    // span, i {
+                    //     color: white;
+                    // }
+                }
+
+                i {
+                    font-size: 10px;
+                }
+            }
+            
+            .access-active {
+                background: linear-gradient(125deg, #0071bc9d, #0072BC);
+                box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.144);
+    
+                border-radius: 5px;
+                border-bottom: 1px solid transparent;
+                
+                i {
+                    color: white;
+                }
+    
+                span {
+                    color: white;
+                }
+
+                &:hover {
+                    background: linear-gradient(125deg, #0071bc9d, #0072BC);
+                    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.144);
+        
+                    border-radius: 5px;
+                    border-bottom: 1px solid transparent;
+                    
+                    i {
+                        color: white;
+                    }
+        
+                    span {
+                        color: white;
+                    }
+                }
+            }
+        }
+    }
+}

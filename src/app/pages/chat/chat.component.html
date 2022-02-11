@@ -1,0 +1,143 @@
+<div class="main-container">
+    <div class="main-content">
+        <div id="chats">
+            <div class="header">
+                <div class="searcher" [class]="styleList">
+                    <input [(ngModel)]="indicationChat" (keyup)="FilterLists()" placeholder="Consultar chat" type="text">
+                    <button (click)="FilterLists()" title="Filtrar" class="btn-s-searcher"><i class="fas fa-search"></i></button>
+                    <button (click)="indicationChat = '';FilterLists()" title="Limpiar" class="btn-s-remove"><i class="far fa-trash-alt"></i></button>
+                    <div class="searcher-list scroll">
+                        <div (click)="chat.GetChat(item)" *ngFor="let item of filterList['mailBox']" class="item">
+                            <div class="r">
+                                <i title="chat entrante" class="fas fa-inbox"></i>
+                            </div>
+                            <div class="data">
+                                <span>{{item['customerName']}}</span>
+                                <small>{{item['subject']}}</small>
+                            </div>
+                        </div>
+                        <div (click)="chat.GetChat(item)" *ngFor="let item of filterList['active']" class="item">
+                            <div class="r">
+                                <i title="chat activo" class="fas fa-comments"></i>
+                            </div>
+                            <div class="data">
+                                <span>{{item['customerName']}}</span>
+                                <small>{{item['subject']}}</small>
+                            </div>
+                        </div> 
+                        <div (click)="chat.GetChat(item)" *ngFor="let item of filterList['chats_closed']" class="item">
+                            <div class="r">
+                                <i title="chat cerrado" class="far fa-comments"></i>
+                            </div>
+                            <div class="data">
+                                <span>{{item['customerName']}}</span>
+                                <small>{{item['subject']}}</small>
+                            </div>
+                        </div>
+                        <div (click)="chat.GetChat(item)" *ngFor="let item of filterList['chatAgents']" class="item">
+                            <div class="r">
+                                <i title="Chat con compañero" class="fas fa-handshake"></i>
+                            </div>
+                            <div class="data">
+                                <span>{{item['customerName']}}</span>
+                                <small>{{item['subject']}}</small>
+                            </div>
+                        </div>
+                        <div (click)="chat.GetChat(item)" *ngFor="let item of filterList['chatArchived']" class="item">
+                            <div class="r">
+                                <i title="Archivado" class="fas fa-archive"></i>
+                            </div>
+                            <div class="data">
+                                <span>{{item['customerName']}}</span>
+                                <small>{{item['subject']}}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav">
+                <button (click)="listActive = 'mailbox';ShowList(1)" [ngClass]="{'active-mail-box': listActive == 'mailbox'}" class="option-primary btn" id="mailbox" title="Buzón de chats">
+                    <i class="fas fa-inbox"></i>
+                    <span [ngClass]="{'active': mailboxAcitve}" *ngIf="chatMailBox.length" class="account">
+                        {{chatMailBox.length}}
+                    </span>
+                </button>
+                <div [class]="styleChats ? 'active-div-show' : 'active-div-hide'" class="active-div">
+                    <button [ngClass]="{'active-active': listActive == 'active'}" (click)="listActive = 'active';ShowList(1)" class="option-primary btn" id="active" title="Chats activos">
+                        <i class="fas fa-comments"></i>
+                        <span [ngClass]="{'active': activeAcitve}" *ngIf="chats.active.length" class="account">
+                            {{chats.active.length}}
+                        </span>
+                    </button>
+                    <button *ngIf="chats.archived.length > 0" title="Chats archivados" [ngClass]="{'active-archived': listActive == 'archived'}" (click)="listActive = 'archived';ShowList(1)" id="archived"><i class="fas fa-archive"></i></button>
+                </div>
+                <button (click)="listActive = 'closed';ShowList(1)" [ngClass]="{'active-closed': listActive == 'closed'}" class="btn" id="closed" title="Chats cerrados">
+                    <i class="far fa-comments"></i>
+                </button>
+                <button (click)="listActive = 'agent';ShowList(1)" [ngClass]="{'active-agent': listActive == 'agent'}" class="btn" id="archived" title="Chats entre compañeros">
+                    <i class="fas fa-handshake"></i>
+                    <div *ngIf="agentAcitve" class="active-agent"></div>
+                </button>
+                <button (click)="listActive = 'new';ShowList(1)" [ngClass]="{'active-new': listActive == 'new'}" class="btn" id="new" title="Nuevo chat">
+                    <i class="far fa-paper-plane"></i>
+                </button>
+            </div>
+            <div class="list scroll">
+                <div (click)="chat.GetChat(item)" *ngFor="let item of chatList" class="item">
+                    <div class="data">
+                        <span class="customerName">{{item.customerName}}</span>
+                        <small class="subject"><i title="Chat en grupo" *ngIf="item.chat_type == 3" class="fas fa-users"></i> {{item.subject}}</small>
+                    </div>
+                    <div class="info">
+                        <div title="{{item.new_messages}} mensajes nuevos" class="new-messages" *ngIf="item.new_messages"><small>{{item.new_messages}}</small></div>
+                        <small class="date" >{{item.change_time}}</small>
+                    </div>
+                </div>
+                <div id="userList" [class]="styleContact">
+                    <div class="searcher" [class]="styleListUser">
+                        <input [(ngModel)]="indicationUser" (keyup)="FilterListsUser()" placeholder="Consultar cliente o agente" type="text">
+                        <button (click)="FilterListsUser()" title="Filtrar" class="btn-s-searcher"><i class="fas fa-search"></i></button>
+                        <button (click)="indicationUser = '';FilterListsUser()" title="Limpiar" class="btn-s-remove"><i class="far fa-trash-alt"></i></button>
+                        <div class="searcher-list scroll">
+                            <ng-container *ngFor="let item of filterListUser['customer']">
+                                <div (click)="chat.VerifyChat(item['id'], item['full_name'], '1')" *ngIf="item['login'] != userLogin" class="item">
+                                    <div class="r">
+                                        <i title="cliente" class="fas fa-user"></i>
+                                    </div>
+                                    <div class="data">
+                                        <span>{{item['full_name']}}</span>
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngFor="let item of filterListUser['agent']">
+                                <div (click)="chat.VerifyChat(item['id'], item['full_name'], '2')" *ngIf="item['id'] != userID" class="item" class="item">
+                                    <div class="r">
+                                        <i title="agente" class="fas fa-user-tie"></i>
+                                    </div>
+                                    <div class="data">
+                                        <span>{{item['full_name']}}</span>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="userList-nav">
+                        <button (click)="userType = 'user-customer';ShowListUsers()" [ngClass]="{'active-user-customer': userType == 'user-customer'}" title="clientes" class="btn customers"><i class="fas fa-user"></i></button>
+                        <button (click)="userType = 'user-agent';ShowListUsers()" [ngClass]="{'active-user-agent': userType == 'user-agent'}" title="agentes" class="btn agents"><i class="fas fa-user-tie"></i></button>
+                    </div>
+                    <div class="u-list scroll">
+                        <ng-container *ngFor="let item of users">
+                            <div (click)="chat.VerifyChat(item['id'], item['full_name'], userType == 'user-customer' ? '1' : '2')" *ngIf="item['id'] != userID" class="item">
+                                <span>{{item.full_name}}</span>
+                                <small *ngIf="item.state == 1"></small>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="messages">
+            <app-chat-message #chat (loadChats)="GetChats()" [listActive]="listActive" [usersCustomer]="usersCustomers" [usersAgents]="usersAgents" [userID]="userID" [userLogin]="userLogin"></app-chat-message>
+        </div>
+    </div>
+</div>

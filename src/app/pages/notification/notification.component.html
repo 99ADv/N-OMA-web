@@ -1,0 +1,189 @@
+<div class="main-container">
+    <div class="main-content">
+        <div class="page-header">
+            <div id="title">
+                <div class="page-title">
+                    <div>
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <small class="page-name">Notificaciones</small>
+                </div>
+            </div>
+            <div class="options">
+                <button (click)="ClearForm();create = true; typeModal = 'form'" title="Nueva notificación">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <div id="section-list" [class]="styleSection">
+            <div class="sl" id="active-list">
+                <div class="header">
+                    <div class="title">
+                        <i class="fas fa-bell"></i>
+                        <small>Activas</small>
+                    </div>
+                </div>
+                <div class="list scroll">
+                    <ng-container *ngFor="let item of notifications">
+                        <div *ngIf="item.state == 1" class="item">
+                            <strong class="title">{{item.title}}</strong>
+                            <span class="body scroll"> {{item.message}}</span>
+                            <button (click)="Update(item.id, '3', '0')" *ngIf="item.state == 1" title="Activa, inactivar" class="btn-bell"><i
+                                    class="fas fa-bell"></i></button>
+                            <button (click)="Update(item.id, '3', '1')" *ngIf="item.state == 0" title="Inactiva, emitir" class="btn-bell"><i
+                                    class="fas fa-bell-slash"></i></button>
+                            <div class="receptor">
+                                <i title="Clientes" *ngIf="item.receiversID == 1 || item.receiversID == 3" class="fas fa-user"></i>
+                                <i title="Agentes" *ngIf="item.receiversID == 2 || item.receiversID == 3" class="fas fa-user-tie"></i>
+                                <!-- <i title="Grupo" *ngIf="item.receiversID == 4" class="fas fa-users"></i> -->
+                            </div>
+                            <div class="i-options">
+                                <button (click)="deleteItem = item.id; typeModal = 'delete'" class="delete"
+                                    title="Borrar"><i class="fas fa-trash-alt"></i></button>
+                                <button (click)="GetItem(item)" class="edit"
+                                    title="Modificar"><i class="fas fa-edit"></i></button>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="sl" id="inactive-list">
+                <div class="header">
+                    <div class="title">
+                        <i class="fas fa-bell-slash"></i>
+                        <small>Inactivas</small>
+                    </div>
+                </div>
+                <div class="list scroll">
+                    <ng-container *ngFor="let item of notifications">
+                        <div *ngIf="item.state == 0" class="item">
+                            <strong class="title">{{item.title}}</strong>
+                            <span class="body scroll">{{item.message}}</span>
+                            <button (click)="Update(item.id, '3', '0')" *ngIf="item.state == 1" title="Activa, inactivar" class="btn-bell"><i
+                                    class="fas fa-bell"></i></button>
+                            <button (click)="Update(item.id, '3', '1')" *ngIf="item.state == 0" title="Inactiva, emitir" class="btn-bell"><i
+                                    class="fas fa-bell-slash"></i></button>
+                            <div class="receptor">
+                                <i *ngIf="item.receiversID == 1 || item.receiversID == 3" class="fas fa-user"></i>
+                                <i *ngIf="item.receiversID == 2 || item.receiversID == 3" class="fas fa-user-tie"></i>
+                                <i title="Grupo" *ngIf="item.receiversID == 4" class="fas fa-users"></i>
+                            </div>
+                            <div class="i-options">
+                                <button (click)="deleteItem = item.id; typeModal = 'delete'" class="delete"
+                                    title="Borrar"><i class="fas fa-trash-alt"></i></button>
+                                <button (click)="GetItem(item)" class="edit"
+                                    title="Modificar"><i class="fas fa-edit"></i></button>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+        <div [class]="{'modal-show' : typeModal != ''}" class="modal">
+            <div class="modal-content scroll">
+                <form *ngIf="typeModal == 'form'" id="create" [formGroup]="notificationForm">
+                    <strong *ngIf="create">Nueva notificación</strong>
+                    <strong *ngIf="!create">Modificar notificación</strong>
+                    <div class="form-control">
+                        <input formControlName="title" name="title" placeholder="Titulo" type="text">
+                    </div>
+                    <div class="form-control">
+                        <textarea formControlName="message" name="message" placeholder="Cuerpo de la notificación"
+                            cols="30" rows="5"></textarea>
+                    </div>
+                    <div class="form-radio">
+                        <input formControlName="receiversID" value="1" id="user" name="receptor" type="radio">
+                        <label title="Clientes" class="line" for="user">
+                            <i class="fas fa-user"></i>
+                        </label>
+                        <input formControlName="receiversID" value="2" id="agent" name="receptor" type="radio">
+                        <label title="Agentes" class="line" for="agent">
+                            <i class="fas fa-user-tie"></i>
+                        </label>
+                        <input formControlName="receiversID" value="3" id="all" name="receptor" type="radio">
+                        <label title="Clientes y agentes" for="all">
+                            <i class="fas fa-user"></i>
+                            <i class="fas fa-user-tie"></i>
+                        </label>
+                        <!-- <input formControlName="receiversID" value="4" id="group" name="receptor" type="radio">
+                        <label title="Group" class="line" for="group">
+                            <i class="fas fa-users"></i>
+                        </label> -->
+                    </div>
+                    <ng-container *ngIf="notificationForm.get('receiversID')?.value == 4">
+                        <div class="entity-select">
+                            <div class="es-header">
+                                <small>Agentes</small>
+                                <button type="button" (click)="typeModalUsers = 'Agentes'"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <div class="es-list scroll">
+                                <div class="item" *ngFor="let item of receivers['agents']">
+                                    <button (click)="AddList(item, receivers['agents'], 1, false)" type="button" title="remover"><i class="fas fa-times"></i></button>
+                                    <small>{{item.full_name}}</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="entity-select">
+                            <div class="es-header">
+                                <small>Clientes</small>
+                                <button type="button" (click)="typeModalUsers = 'Clientes'"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <div class="es-list scroll">
+                                <div class="item" *ngFor="let item of receivers['customers']">
+                                    <button (click)="AddList(item, receivers['customers'], 2, false)" type="button" title="remover"><i class="fas fa-times"></i></button>
+                                    <small>{{item.full_name}}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <div class="form-control-row">
+                        <div class="form-sw">
+                            <input formControlName="state" value="1" id="true" name="state" type="radio">
+                            <label title="Emitir" for="true">
+                            </label>
+                            <input formControlName="state" value="0" id="false" name="state" type="radio">
+                            <label title="No emitir" name="state" for="false">
+                            </label>
+                        </div>
+                        <small *ngIf="notificationForm.get('state')?.value == 1">Emitir</small>
+                        <small *ngIf="notificationForm.get('state')?.value == 0">No emitir</small>
+                    </div>
+                    <button (click)="Create()"*ngIf="create" [disabled]="!notificationForm.valid || 
+                    (notificationForm.get('receiversID')?.value == 4) && (receivers['agents'].length == 0 && receivers['customers'].length == 0)" 
+                    class="send">Guardar</button>
+                    <button (click)="EdictClick()" *ngIf="!create" [disabled]="notificationForm.get('receiversID')?.value == 4" class="edit">Modificar</button>
+                    <button type="button" (click)="typeModal = ''" class="cancel">Cancelar</button>
+                    <div [class]="{'modal-show' : typeModalUsers != ''}" class="modal">
+                        <div class="modal-content scroll">
+                            <div class="a-header">
+                                <span>{{typeModalUsers}}</span>
+                                <button type="button" (click)="typeModalUsers = ''"><i class="fas fa-times"></i></button>
+                            </div>
+                            <div class="a-list scroll">
+                                <ng-container *ngIf="typeModalUsers == 'Agentes'">
+                                    <button [class]="{'ie-active' : item.active}" (click)="AddList(item, receivers['agents'], 1, true)" type="button" class="item" *ngFor="let item of usersAgents">
+                                        <i *ngIf="item.active" class="fas fa-check"></i>
+                                        <span >{{item.full_name}}</span>
+                                    </button>
+                                </ng-container>
+                                <ng-container *ngIf="typeModalUsers == 'Clientes'">
+                                    <button [class]="{'ie-active' : item.active}" (click)="AddList(item, receivers['customers'], 2, true)" type="button" class="item" *ngFor="let item of usersCustomers">
+                                        <i *ngIf="item.active" class="fas fa-check"></i>
+                                        <span>{{item.full_name}}</span>
+                                    </button>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div *ngIf="typeModal == 'delete'" class="confirm">
+                    <span>¿Esta segur@ que quiere borrar esta notificaión?</span>
+                    <div class="btn-confirm">
+                        <button (click)="Update(deleteItem, '6', '0')" class="ok-delete">ACEPTAR</button>
+                        <button (click)="typeModal = ''" class="cancel">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

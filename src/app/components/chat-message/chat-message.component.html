@@ -1,0 +1,314 @@
+<div id="container" [class]="styleSection ? 'show-section' : 'show-messages'">
+    <ng-container *ngIf="chat.data.id && chat.data.id != 0">
+        <div id="messages">
+            <div class="header">
+                <div id="chat-data">
+                    <div class="members" [class]="styleGroup">
+                        <ng-container *ngIf="chat.data.agent != null">
+                            <i *ngIf="chat.data.chat_type == 1" (click)="ShowGroup(0, '')" class="fas fa-user"></i>
+                            <i *ngIf="chat.data.chat_type == 2" class="fas fa-user-tie"></i>
+                            <i *ngIf="chat.data.chat_type == 3" (click)="ShowGroup(0, '')" class="fas fa-users"></i>
+                        </ng-container>
+                        <i *ngIf="chat.data.agent == null && chat.data.chat_type == 1" class="fas fa-user"></i>
+                        <div *ngIf="chat.data.stateID != 2" id="group">
+                            <div class="g-header">
+                                <small>Lista de participantes</small>
+                                <div>
+                                    <button title="Agregar cliente"
+                                        (click)="ShowGroup(1, 'cliente'); userActive = 'cliente';indicationUser = '';FilterLists()">+
+                                        <i class="fas fa-user"></i></button>
+                                    <button title="Agregar agente"
+                                        (click)="ShowGroup(1, 'agente'); userActive = 'agente';indicationUser = '';FilterLists()">+
+                                        <i class="fas fa-user-tie"></i></button>
+                                </div>
+                            </div>
+                            <div class="list scroll">
+                                <div *ngFor="let item of chat.participants" class="item">
+                                    <i title="Agente" *ngIf="item.user_type == 'users'" class="fas fa-user-tie" [class]="{'active': item.owner == 1}"></i>
+                                    <i title="Cliente" *ngIf="item.user_type == 'customer_user'" class="fas fa-user" [class]="{'active': item.owner == 1}"></i>
+                                    <small class="name">{{item.full_name}}</small>
+                                    <small class="id" *ngIf="item.user_type == 'customer_user' && item.owner == 1">Propietario</small>
+                                    <small class="id" *ngIf="item.user_type == 'users' && item.owner == 1">Responsable</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="addUser" [class]="styleGroupAdd">
+                            <small>Nuevo {{userActive}}</small>
+                            <div class="searcher searcher-list-hide">
+                                <input [(ngModel)]="indicationUser" (keyup)="FilterLists()"
+                                    placeholder="Consultar {{userActive}}" type="text">
+                                <button (click)="FilterLists()" title="Filtrar" class="btn-s-searcher">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                                <button (click)="indicationUser = '';FilterLists()" title="Limpiar"
+                                    class="btn-s-remove">
+                                    <i class="far fa-trash-alt"></i>
+                                </button>
+                            </div>
+                            <div class="list scroll">
+                                <ng-container *ngFor="let item of usrList">
+                                    <div (click)="AddParticipant(item.id)" *ngIf="item.id != userID" class="item">
+                                        <small>{{item.full_name}}</small>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="data">
+                        <span *ngIf="chat.data.ownerID != userID" (click)="styleData = !styleData" class="customerName">{{chat.data.owner}}</span>
+                        <span *ngIf="chat.data.ownerID == userID" class="customerName">{{chat.data.agent}}</span>
+                        <small *ngIf="chat.data.chat_type != 2"
+                            (click)="styleData = !styleData">{{chat.data.subject}}</small>
+                        <div *ngIf="chat.data.chat_type != 2" id="comple-data"
+                            [class]="styleData ? 'cd-show' : 'cd-hide'" class="scroll">
+                            <span *ngIf="chat.data.ownerID != userID" class="customerName">{{chat.data.owner}}</span>
+                            <span *ngIf="chat.data.ownerID == userID" class="customerName">{{chat.data.agent}}</span>
+                            <span>{{chat.data.subject}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="chat.data.agent != null && chat.data.chat_type != 2" class="time">
+                    <button (click)="styleTime = !styleTime"><i class="far fa-clock"></i></button>
+                    <div class="dates" [class]="styleTime ? 'time-show' : 'time-hide'">
+                        <div class="item-date">
+                            <small>Inicio:</small>
+                            <span>{{chat.data.create_time | date:'Y/MMM/dd h:mm a'}}</span>
+                        </div>
+                        <ng-container *ngIf="chat.data.chatType != 0">
+                            <div *ngIf="chat.data.stateID != 2" class="item-date">
+                                <small>En progreso:</small>
+                                <span>{{now | date:'Y/MMM/dd h:mm a'}}</span>
+                            </div>
+                            <div *ngIf="chat.data.stateID == 2" class="item-date">
+                                <small>Fecha de cierre:</small>
+                                <span>{{chat.data.closed_time | date:'Y/MMM/dd h:mm a'}}</span>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+                <div id="options">
+                    <a [routerLink]="['/ticket',chat.data.ticketID]" *ngIf="chat.data.ticketID" id="ticket"
+                        title="Ver ticket">
+                        <i class="fas fa-ticket-alt"></i>
+                    </a>
+                    <button *ngIf="chat.pinned.length != 0"
+                        (click)="styleSection = true; sectionShow='Mensajes fijados'" id="pin" title="Mensajes fijados">
+                        <i class="fas fa-thumbtack"></i>
+                    </button>
+                    <button *ngIf="chat.messages.length > 5"
+                        (click)="styleSection = true; sectionShow='Consultar mensajes'" id="search"
+                        title="Consultar mensaje">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button *ngIf="chat.scaled.length > 0" (click)="styleSection = true; sectionShow='Historial'"
+                        id="history" title="Historial">
+                        <i class="fas fa-history"></i>
+                    </button>
+                    <div class="gr" *ngIf="chat.data.stateID != 2">
+                        <button (click)="UpdateChat('1','1')"
+                            *ngIf="chat.data.chat_type != 2 && chat.data.archived == 0 && chat.data.agent != null"
+                            id="archived" title="Archivar">
+                            <i class="fas fa-archive"></i>
+                        </button>
+                        <button (click)="UpdateChat('1','0')" *ngIf="chat.data.archived == 1 && chat.data.agent != null"
+                            id="archived" title="Desarchivar">
+                            <i class="fas fa-arrow-up"></i>
+                        </button>
+                        <button (click)="styleModal = 'modal-show'; contentModal = 'Reasignar'"
+                            *ngIf="chat.data.chat_type != 2 && chat.data.agent != null && chat.data.agentID == userID" id="reasognate"
+                            title="Reasignar">
+                            <i class="fas fa-share"></i>
+                        </button>
+                        <button title="Convertir a ticket" *ngIf="chat.data.chat_type != 2 && chat.data.agent != null && chat.data.agentID == userID"
+                            (click)="styleModal = 'modal-show'; contentModal='closed'">
+                            <i class="fas fa-ticket-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="message-body">
+                <div id="messages-div" class="messages scroll">
+                    <ng-container *ngFor="let item of chat.messages">
+                        <div [class]="item.from == userID ? 'item-from' : 'item-to'" class="item">
+                            <form (ngSubmit)="PinChat(item)" [class]="item['class'] ? 'pin-form-show' : 'pin-form-hide'"
+                                class="pin-form">
+                                <input [(ngModel)]="pintTitle" name="pintTitle" placeholder="titulo" type="text">
+                                <button class="send"><i class="fas fa-save"></i></button>
+                            </form>
+                            <div class="message-header">
+                                <button (click)="item['class'] = !item['class']"
+                                    *ngIf="item.pin == 0 && chat.data.agent != null" title="Fijar mensaje"
+                                    class="pin"><i class="fas fa-thumbtack"></i></button>
+                                <button (click)="PinChatUpdate(item.id, '', '')" *ngIf="item.pin == 1"
+                                    title="Quitar de fijados" class="no-pin"><i class="fas fa-thumbtack"></i></button>
+                                <small *ngIf="item.from != userID"><small> {{item.fromName}}</small></small>
+                            </div>
+                            <div class="value">
+                                <span *ngIf="item.type == 1">{{item.body}}</span>
+                                <a [href]="item.body" target="_blank" *ngIf="item.type == 2">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    <span>{{item.body}}</span>
+                                </a>
+                                <div *ngIf="item.type == 3">
+                                    <i class="fas fa-file"></i>
+                                    <a [href]="url_api+item.path" target="_blank">{{item.body}}</a>
+                                </div>
+                                <a [href]="url_api+item.path" target="_blank" *ngIf="item.type == 4">
+                                    <img [src]="url_api+item.path">
+                                </a>
+                                <small>{{item.create_time}}</small>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+                <form *ngIf="chat.data.stateID != 2 && styleModal == 'modal-hide'" [formGroup]="messageForm" (ngSubmit)="MessageEvent()" class="response-form">
+                    <button [class]="{'btn-scroll-show' : styleBTNScroll}" type="button" (click)="ScrollTop()" class="btn-scroll"><i class="fas fa-chevron-down"></i></button>
+                    <button (click)="iputFile.click()" type="button" title="Adjuntar archivo" id="attachment"><i
+                            class="fas fa-paperclip"></i></button>
+                    <input (change)="OnFile($event)" style="display: none;" #iputFile type="file">
+                    <input formControlName="body" name="body" placeholder="Escribe aqui un mensaje" type="text">
+                    <button *ngIf="messageForm.valid || attached != null" title="Enviar mensaje" id="send"><i
+                            class="fas fa-paper-plane"></i></button>
+                    <div [class]="styleAttached ? 'previw-show' : 'previw-hide'" class="previw">
+                        <i *ngIf="typeFile == 'image'" class="fas fa-image"></i>
+                        <i *ngIf="typeFile != 'image'" class="fas fa-file"></i>
+                        <span>{{fileName}}</span>
+                        <button type="button" (click)="ClearFile()"><i class="far fa-trash-alt"></i></button>
+                    </div>
+                    <div [class]="styleBlockMessageForm ? 'block-show' : 'block-hide'" id="block"></div>
+                </form>
+            </div>
+        </div>
+        <div id="section">
+            <div class="header">
+                <div>
+                    <button (click)="styleSection = false"><i class="fas fa-times"></i></button>
+                    <span>{{sectionShow}}</span>
+                </div>
+            </div>
+            <div *ngIf="sectionShow == 'Mensajes fijados'" id="pinnedMessages" class="scroll">
+                <div *ngIf="filterPin.length > 5" class="searcher searcher-list-hide">
+                    <input [(ngModel)]="indicationPin" (keyup)="FilterListsPin()" type="text">
+                    <button (click)="FilterListsPin()" title="Filtrar" class="btn-s-searcher"><i
+                            class="fas fa-search"></i></button>
+                    <button (click)="indicationPin = '';FilterListsPin()" title="Limpiar" class="btn-s-remove"><i
+                            class="far fa-trash-alt"></i></button>
+                </div>
+                <div class="item" *ngFor="let item of filterPin">
+                    <div class="info">
+                        <small title="Fijador" class="user">
+                            <button (click)="PinChatUpdate(item.messageID, '', '')" title="Quitar de fijados"
+                                class="no-pin"><i class="fas fa-thumbtack"></i></button>
+                            {{item.userName}}</small>
+                        <small>{{item.create_time}}</small>
+                    </div>
+                    <div class="message">
+                        <span class="title">{{item.title}}</span>
+                        <ng-container>
+                            <span *ngIf="item.type == 1">{{item.body}}</span>
+                            <a [href]="item.body" target="_blank" *ngIf="item.type == 2">
+                                <i class="fas fa-external-link-alt"></i>
+                                <span>{{item.body}}</span>
+                            </a>
+                            <div *ngIf="item.type == 3">
+                                <i class="fas fa-file"></i>
+                                <a [href]="url_api+item.path" target="_blank">{{item.body}}</a>
+                            </div>
+                            <a [href]="url_api+item.path" target="_blank" *ngIf="item.type == 4">
+                                <img [src]="url_api+item.path">
+                            </a>
+                        </ng-container>
+                        <small title="Propietario" class="owner">{{item.fromName}}</small>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="sectionShow == 'Consultar mensajes'" id="messages-s">
+                <div class="searcher searcher-list-hide">
+                    <input [(ngModel)]="indicationMessage" (keyup)="FilterListsMessage()" type="text">
+                    <button (click)="FilterListsMessage()" title="Filtrar" class="btn-s-searcher"><i
+                            class="fas fa-search"></i></button>
+                    <button (click)="indicationMessage = '';FilterListsMessage()" title="Limpiar"
+                        class="btn-s-remove"><i class="far fa-trash-alt"></i></button>
+                </div>
+                <div class="messages scroll">
+                    <ng-container *ngFor="let item of filterMessage">
+                        <div [class]="item.from == 1 ? 'item-from' : 'item-to'" class="item">
+                            <div class="message-header">
+                                <small *ngIf="item.from != 1"><small> {{item.fromName}}</small></small>
+                            </div>
+                            <div class="value">
+                                <span *ngIf="item.type == 1">{{item.body}}</span>
+                                <a [href]="item.body" target="_blank" *ngIf="item.type == 2">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    <span>{{item.body}}</span>
+                                </a>
+                                <div *ngIf="item.type == 3">
+                                    <i class="fas fa-file"></i>
+                                    <a [href]="url_api+item.path" target="_blank">{{item.body}}</a>
+                                </div>
+                                <a [href]="url_api+item.path" target="_blank" *ngIf="item.type == 4">
+                                    <img [src]="url_api+item.path">
+                                </a>
+                                <small>{{item.create_time}}</small>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <div *ngIf="sectionShow == 'Historial'" id="pin-s">
+                <div class="messages scroll">
+                    <ng-container *ngFor="let item of chat.scaled">
+                        <div class="item">
+                            <div class="message-header">
+                                <small>{{item.ownerName}}</small>
+                                <i class="fas fa-long-arrow-alt-down"></i>
+                                <small class="new">{{item.new_ownerName}}</small>
+                            </div>
+                            <div class="value">
+                                <span class="label">Razón</span>
+                                <span>{{item.reason}}</span>
+                                <small>{{item.create_time}}</small>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <div id="modal" [class]="styleModal">
+        <button (click)="styleModal = 'modal-hide'"><i class="fas fa-times"></i></button>
+        <div id="modal-content">
+            <strong *ngIf="contentModal != 'closed'">{{contentModal}}</strong>
+            <form *ngIf="contentModal == 'Reasignar'" [formGroup]="reasignForm" (ngSubmit)="Reasign()" id="re-asign">
+                <div class="form-control">
+                    <select formControlName="new_ownerID" name="agentList" id="agentList">
+                        <option selected disabled value="null">Nuevo encargado</option>
+                        <ng-container *ngFor="let item of usersAgents">
+                            <option *ngIf="item.id != userID" [value]="item.id">{{item.full_name}}</option>
+                        </ng-container>
+                    </select>
+                </div>
+                <div class="form-control">
+                    <label for="agentList">Razón:</label>
+                    <textarea formControlName="reason" name="reason" id="reason" cols="30" rows="10"></textarea>
+                </div>
+                <button [disabled]="!reasignForm.valid" class="send">Asignar</button>
+            </form>
+            <form *ngIf="contentModal == 'Asunto del chat'" [formGroup]="chatForm"
+                (ngSubmit)="styleModal = 'modal-hide'" id="re-asign">
+                <div class="form-control">
+                    <textarea formControlName="subject" name="subject" id="reason" cols="30" rows="2"></textarea>
+                </div>
+                <button [disabled]="!chatForm.valid" class="send">Escribir un mensaje</button>
+            </form>
+            <div *ngIf="contentModal == 'closed'" id="closed">
+                <span>¿Segur@ que quiere convertir este chat en un ticket?</span>
+                <small>Este se cerrara</small>
+                <div class="btns">
+                    <button (click)="ToTicket()" class="next">Continuar con la operación</button>
+                    <button (click)="styleModal = 'modal-hide'" class="cancel">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

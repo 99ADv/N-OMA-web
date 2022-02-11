@@ -1,0 +1,170 @@
+<div class="main-container">
+    <div class="main-content">
+        <div class="page-header">
+            <div id="title">
+                <div class="page-title">
+                    <div>
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <small class="page-name">Llamadas {{option}}</small>
+                    <button (click)="GetTels()" title="recargar"><i class="fas fa-redo"></i></button>
+                </div>
+            </div>
+            <div id="options">
+                <button (click)="option = 'entrantes';GetCalls()" title="Llamadas entrantes">
+                    <i class="fas fa-phone-alt"></i>
+                </button>
+                <button (click)="option = 'borradores';GetCalls()" title="Borradores">
+                    <i class="fas fa-eraser"></i>
+                </button>
+                <button (click)="option = 'atendidas';GetCalls()" class="lost" title="Llamadas atendidas">
+                    <i class="fas fa-phone-alt"></i></button>
+                <button (click)="option = 'rechazadas';GetCalls()" title="Llamadas rechazadas">
+                    <i class="far fa-trash-alt"></i></button>
+            </div>
+        </div>
+        <div id="calls" [class]="item_.id != 0 ? 'form-show': 'form-hide'">
+            <div id="section-call">
+                <div *ngIf="option == 'entrantes'" id="nav">
+                    <div id="tels-div">
+                        <button (click)="list_active = 0; ShowCall()" class="btn-incoming"
+                            [class]="{'i-active' : telActive == 0}">
+                            <i title="Llamadas entrantes" class="fas fa-inbox"></i>
+                        </button>
+                        <div id="tel-list">
+                            <button (click)="list_active = item; ShowCall()" [class]="{'active' : telActive == item.id}"
+                                [title]="item.number" *ngFor="let item of tels" class="item">
+                                <small class="name">{{item.name}}</small>
+                                <small *ngIf="calls_[item.id]">{{calls_[item.id].length}}</small>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div id="tells-call">
+                    <div id="mailbox" class="calls">
+                        <div class="calls-title">
+                            <ng-container *ngIf="option == 'entrantes'">
+                                <i title="Entrantes" class="fas fa-phone-volume"></i>
+                                <small class="name">Entrantes</small>
+                            </ng-container>
+                            <small class="amount">{{incomig.length}}</small>
+                        </div>
+                        <div class="list scroll">
+                            <div *ngFor="let item of incomig" class="item">
+                                <div class="i-header">
+                                    <small *ngIf="telActive == 0">{{item.tel_name}}</small>
+                                    <div></div>
+                                    <button (click)="callUpdate(item, '1', '0')" *ngIf="option == 'entrantes' && item_.id != item.id" class="have">Tomar</button>
+                                    <button (click)="TakeCall(item)" *ngIf="option != 'entrantes' && option != 'atendidas' && item_.id != item.id" class="have">Generar reporte</button>
+                                    <i *ngIf="item_.id == item.id" class="fas fa-thumbtack"></i>
+                                </div>
+                                <div class="data">
+                                    <span class="customer">{{item.customer_name}}</span>
+                                    <small>{{item.create_time1}}</small>
+                                </div>
+                                <div *ngIf="item_.id != item.id" class="btns">
+                                    <button (click)="RejectActive(item)" *ngIf="option == 'entrantes' || option == 'borradores'" title="Rechazar">
+                                        <i class="far fa-trash-alt"></i>
+                                    </button>
+                                    <button (click)="itemDelete = item.id; styleModal = 'confirm'" class="delete"
+                                        *ngIf="option == 'rechazadas'" title="eliminar">
+                                        <i class="far fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div [class]="telActive != 0 && option == 'entrantes' ? 'lost-show': 'lost-hide'" id="lost"
+                        class="calls">
+                        <div class="calls-title">
+                            <i title="Perdidas" class="fas fa-phone-slash"></i>
+                            <small class="name">Perdidas</small>
+                            <small class="amount">{{lost.length}}</small>
+                        </div>
+                        <div class="list scroll">
+                            <div *ngFor="let item of lost" class="item">
+                                <div class="i-header">
+                                    <small *ngIf="telActive == 0">{{item.tel_name}}</small>
+                                    <div></div>
+                                    <button (click)="callUpdate(item, '1', '0')"
+                                        *ngIf="option == 'entrantes' && item_.id != item.id" class="have">Generar
+                                        reporte</button>
+                                    <i *ngIf="item_.id == item.id" class="fas fa-thumbtack"></i>
+                                </div>
+                                <div class="data">
+                                    <span class="customer">{{item.customer_name}}</span>
+                                    <small>{{item.create_time1}}</small>
+                                </div>
+                                <div *ngIf="item_.id != item.id" class="btns">
+                                    <button (click)="RejectActive(item)" *ngIf="option == 'entrantes'"
+                                        title="Rechazar"><i class="far fa-trash-alt"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="report">
+                <button (click)="ClearForm()" class="closed"><i class="fas fa-times"></i></button>
+                <div class="item">
+                    <span>Datos de la llamada</span>
+                    <div>
+                        <div class="data">
+                            <span *ngIf="tels.length > 1" class="name">Telefono:</span>
+                            <span>{{item_.tel_name}}</span>
+                        </div>
+                        <div class="data">
+                            <span class="name">Cliente:</span>
+                            <span>{{item_.customer_name}}</span>
+                        </div>
+                        <div class="data">
+                            <span class="name">Fecha de creación:</span>
+                            <span>{{item_.create_time1}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form">
+                    <strong>Reporte</strong>
+                    <form [formGroup]="ticketForm" (ngSubmit)="CreateTicket()">
+                        <div class="form-control">
+                            <select formControlName="queueID" name="queue-ticket" id="queue-ticket">
+                                <option disabled selected value="null">Seleccione una cola</option>
+                                <option *ngFor="let item of queues" [value]="item.queueID">{{item.queue_name}}</option>
+                            </select>
+                        </div>
+                        <div class="form-control">
+                            <input formControlName="subject" name="subject" placeholder="Asunto" type="text">
+                        </div>
+                        <div class="form-control">
+                            <textarea formControlName="body" placeholder="Escribe aqui el reporte" name="report"
+                                id="report" cols="30" rows="5"></textarea>
+                        </div>
+                        <button [disabled]="!ticketForm.valid" class="send">Generar reporte</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="modal" [ngClass]="{'modal-show': styleModal != ''}">
+            <div class="modal-content">
+                <div *ngIf="styleModal == 'reject'" class="form">
+                    <strong>Rechazar llamada</strong>
+                    <form [formGroup]="rejectCallForm" (ngSubmit)="callReject()">
+                        <div class="form-control">
+                            <textarea formControlName="reason" placeholder="Escribe aqui la razón" name="report"
+                                id="report" cols="30" rows="5"></textarea>
+                        </div>
+                        <button [disabled]="!rejectCallForm.valid" class="send">Rechazar</button>
+                        <button (click)="styleModal = ''" class="cancel">Cancelar</button>
+                    </form>
+                </div>
+                <div *ngIf="styleModal == 'confirm'" class="confirm">
+                    <span>¿Esta segur@ que quiere borrar esta llamada?</span>
+                    <div class="btn-confirm">
+                        <button (click)="Delete()" class="ok-delete">ACEPTAR</button>
+                        <button (click)="styleModal = ''" class="cancel">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

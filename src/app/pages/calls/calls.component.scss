@@ -1,0 +1,473 @@
+.main-container {
+    width: 180vh;
+
+    left: 215px;
+
+    .main-content {
+        overflow: hidden;
+        position: relative;
+    }
+}
+
+.lost i {
+    transform: rotate(135deg);
+}
+
+.page-header {
+    height: 10%;
+    min-height: 45px;
+    max-height: 50px;
+
+    #title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1em;
+    }
+
+    #options {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5em;
+
+        button {
+            width: 30px;
+            height: 30px;
+
+            border-bottom: 1px solid rgba(0, 0, 0, 0.247);
+
+            &:hover {
+                box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.247);
+
+                border-radius: 5px;
+            }
+        }
+    }
+}
+
+#calls {
+    width: 100%;
+    height: 91%;
+
+    border: 1px solid rgba(0, 0, 0, 0.082);
+    overflow: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.form-show {
+    #section-call {
+        width: 60%;
+    }
+
+    #report {
+        width: 40%;
+
+        opacity: 100%;
+
+        overflow: auto;
+        padding: 10px 20px;
+    }
+}
+
+.form-hide {
+    #section-call {
+        width: 100%;
+    }
+
+    #report {
+        width: 0%;
+
+        opacity: 0%;
+
+        overflow: hidden;
+        padding: 0px;
+    }
+}
+
+#section-call {
+    height: 100%;
+
+    box-shadow: 3px 0px 3px rgba(0, 0, 0, 0.151);
+
+    overflow: hidden;
+
+    #nav {
+        width: 100%;
+        min-height: 40px;
+        max-height: 40px;
+
+        padding: 0px 10px;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1em;
+
+        #tels-div {
+            width: 100%;
+
+            padding: 5px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 1em;
+
+            button {
+                font-size: 14px;
+
+                padding: 7px;
+            }
+
+            .btn-incoming {
+                width: 30px;
+                height: 30px;
+
+                background: transparent;
+                box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.459);
+                color: black;
+
+                border-radius: 100px;
+            }
+
+            .i-active {
+                background: #1363ad;
+                box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.459);
+                color: white;
+            }
+
+            #tels-btn {
+                width: 25px;
+                height: 25px;
+                min-width: 25px;
+
+                // background: rgba(212, 212, 212, 0.171);
+                box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.267);
+
+                border: 1px solid rgba(0, 0, 0, 0.11);
+                border-radius: 5px;
+
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+            }
+
+            #tel-list {
+                width: 100%;
+
+                padding: 10px 0px;
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                gap: 0.5em;
+
+                .item {
+                    border-left: 1px solid rgba(0, 0, 0, 0.185);
+                    border-radius: 0px;
+
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                    gap: 0.2em;
+
+                    &:hover {
+                        background: rgba(240, 240, 240, 0.404);
+                        box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.308);
+
+                        border-radius: 5px;
+                        border-left: 2px solid #1363ad;
+                    }
+
+                    .name {
+                        font-weight: 900;
+                    }
+                }
+
+                .active,
+                .active:hover {
+                    background: #00a8e6;
+                    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.418);
+                    color: white;
+
+                    border-left: 1px solid transparent;
+
+                    border-radius: 3px;
+                }
+            }
+        }
+    }
+
+    #tells-call {
+        width: 100%;
+        height: 95%;
+
+        border-top: 1px solid rgba(0, 0, 0, 0.151);
+
+        display: flex;
+        flex-direction: row;
+
+        > div {
+            display: flex;
+            flex-direction: column;
+
+            .calls-title {
+                width: 100%;
+
+                padding: 5px 5px;
+                padding-top: 10px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 0.5em;
+
+                i {
+                    color: rgba(0, 0, 0, 0.658);
+                }
+
+                .name {
+                    font-weight: 900;
+                }
+
+                .amount {
+                    min-width: 20px;
+                    height: 20px;
+
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.219);
+                }
+            }
+
+            .list {
+                width: 100%;
+                height: 100%;
+
+                padding-bottom: 30px;
+
+                padding: 5px 5px;
+                padding-bottom: 30px;
+                overflow: auto;
+                display: flex;
+                flex-direction: column;
+
+                .item {
+                    width: 100%;
+
+                    cursor: pointer;
+
+                    padding: 5px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 0.2em;
+
+                    &:hover {
+                        background: rgba(226, 226, 226, 0.144);
+                        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.267);
+
+                        border: 1px solid rgba(0, 0, 0, 0.247);
+                        border-radius: 5px;
+
+                        padding: 5px;
+
+                        button,
+                        .btns {
+                            height: 30px;
+                        }
+                    }
+
+                    > small {
+                        color: rgba(0, 0, 0, 0.562);
+                        font-weight: 900;
+                    }
+
+                    button {
+                        height: 0px;
+
+                        overflow: hidden;
+                    }
+
+                    .i-header {
+                        width: 100%;
+
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+
+                        .fa-thumbtack {
+                            color: #FF6B00;
+                        }
+
+                        .have {
+                            background: #1363ad;
+                            color: white;
+                            font-size: 10px;
+                            
+                            border-radius: 5px;
+
+                            padding: 0px 5px;
+                        }
+
+                    }
+
+                    .data {
+                        width: 100%;
+
+                        background: white;
+                    
+                        box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.356);
+        
+                        border: 1px solid rgba(0, 0, 0, 0.11);
+                        border-radius: 5px;
+
+                        padding: 10px;
+                        display: flex;
+                        flex-direction: column;
+
+                        small {
+                            color: rgba(0, 0, 0, 0.548);
+                            align-self: flex-end;
+                        }
+                    }
+
+                    .btns {
+                        height: 0px;
+
+                        overflow: hidden;
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+                        align-items: center;
+                        gap: 1em;
+
+                        button {
+                            width: 30px;
+                            height: 30px;
+
+                            border-radius: 5px;
+                        }
+
+                        .delete {
+                            background: red;
+                            color: white;
+                        }
+
+                        .recover {
+                            background: #0072BC;
+                            color: white;
+                        }
+                    }
+                }
+            }
+        }
+
+        #mailbox {
+            width: 100%;
+            border-right: 1px solid rgba(0, 0, 0, 0.151);
+        }
+
+        .lost-show {
+            width: 100%;
+
+            opacity: 100%;
+        }
+
+        .lost-hide {
+            width: 0%;
+
+            opacity: 0%;
+        }
+    }
+}
+
+#report {
+    height: 100%;
+
+    background: rgba(202, 202, 202, 0.158);
+
+    margin: auto;
+
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1em;
+
+    .closed {
+        width: 30px;
+        height: 30px;
+
+        background: rgb(83, 83, 83);
+        color: white;
+
+        border-bottom-left-radius: 10px;
+        
+        position: absolute;
+        top: 0%;
+        right: 0%;
+    }
+
+    .item {
+        width: 100%;
+
+        display: flex;
+        flex-direction: column;
+        gap: 0.2em;
+
+        > div {
+            background: white;
+            box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.26);
+            
+            border: 1px solid rgba(0, 0, 0, 0.13);
+            border-radius: 5px;
+
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5em;
+
+            .data {
+                display: flex;
+                flex-direction: row;
+                gap: 0.5em;
+
+                .name {
+                    color: rgba(0, 0, 0, 0.678);
+                    font-weight: 900;
+                }
+            }
+        }
+    }
+
+    .form {
+        width: 100%;
+
+        background: white;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.26);
+
+        border-radius: 10px;
+
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+
+            
+        }
+    }
+}

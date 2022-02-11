@@ -1,0 +1,13 @@
+<div id="container">
+    <img src="../../../assets/images/3805046.jpg">
+    <nav>
+        <a title="Inicio" [routerLink]="['/home']">
+            <i class="fas fa-home"></i>
+            <span>Inicio</span>
+        </a>
+        <a class="line" *ngFor="let item of access" [title]="item.name" [routerLink]="[item.url]">
+            <i [class]="item.icon"></i>
+            <span>{{item.name}}</span>
+        </a>
+    </nav>
+</div>

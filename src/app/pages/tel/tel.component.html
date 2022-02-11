@@ -1,0 +1,96 @@
+<div class="main-container">
+    <div class="main-content">
+        <div class="page-header">
+            <div id="title">
+                <div class="page-title">
+                    <div>
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <small class="page-name">Teléfonos</small>
+                </div>
+            </div>
+            <div class="options">
+                <button (click)="ClearForm(); typeForm = 'Nuevo'" title="Nuevo teléfono">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="section-body">
+            <div class="list-main">
+                <div (click)="InitialiceItem(item)" *ngFor="let item of tells" class="item">
+                    <div class="i-body">
+                        <i *ngIf="item.state == 0" class="fas fa-lock"></i>
+                        <span class="name">{{item.name}}</span>
+                        <small>#{{item.number}}</small>
+                    </div>
+                </div>
+            </div>
+            <div [class]="{'item-data-show' : typeForm != ''}" class="item-data">
+                <form [formGroup]="telForm">
+                    <strong class="form-title">{{typeForm}} registro</strong>
+                    <div class="form-control-2-row">
+                        <input formControlName="name" name="name" placeholder="Nombre" type="text">
+                        <input formControlName="number" name="number" placeholder="Numero" type="number">
+                    </div>
+                    <div class="entity-select">
+                        <div class="es-header">
+                            <small>Colas asignadas</small>
+                            <button type="button" (click)="typeModal = 'Colas'"><i class="fas fa-plus"></i></button>
+                        </div>
+                        <div class="es-list scroll">
+                            <div *ngFor="let item of queusAS" class="item">
+                                <button type="button" (click)="AddList(item, queusAS, 1, false)" title="remover"><i class="fas fa-times"></i></button>
+                                <small>{{item.queue_name}}</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="entity-select">
+                        <div class="es-header">
+                            <small>Agentes asignados</small>
+                            <button type="button" (click)="typeModal = 'Agentes'"><i class="fas fa-plus"></i></button>
+                        </div>
+                        <div class="es-list scroll">
+                            <div class="item" *ngFor="let item of agentsAS">
+                                <button type="button" (click)="AddList(item, agentsAS, 2, false)" title="remover"><i class="fas fa-times"></i></button>
+                                <small>{{item.full_name}}</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-sw">
+                        <input formControlName="state" value="1" id="true" name="state" type="radio">
+                        <label title="Habilitar" for="true">
+                        </label>
+                        <input formControlName="state" value="0" id="false" name="state" type="radio">
+                        <label title="Deshabilitar" name="state" for="false">
+                        </label>
+                    </div>
+                    <button type="button" (click)="Create()" [disabled]="!telForm.valid || queusAS.length == 0 || agentsAS.length == 0" *ngIf="typeForm == 'Nuevo'" class="send">Guardar</button>
+                    <button type="button" (click)="UpdateEvent()" *ngIf="typeForm == 'Modificar'" class="edit">Guardar cambios</button>
+                    <button type="button" (click)="typeForm = ''" class="Cancelar">cancelar</button>
+                </form>
+                <div [class]="{'modal-show' : typeModal != ''}" class="modal">
+                    <div class="modal-content scroll">
+                        <div class="a-header">
+                            <span>{{typeModal}}</span>
+                            <button (click)="typeModal = ''"><i class="fas fa-times"></i></button>
+                        </div>
+                        <div class="a-list scroll">
+                            <ng-container *ngIf="typeModal == 'Agentes'">
+                                <button (click)="AddList(item, agents, 2, true)" [class]="{'access-active' : item.active}" class="item" *ngFor="let item of agents">
+                                    <i *ngIf="item.active" class="fas fa-check"></i>
+                                    <span>{{item.full_name}}</span>
+                                </button>
+                            </ng-container>
+                            <ng-container *ngIf="typeModal == 'Colas'">
+                                <button (click)="AddList(item, queues, 1, true)" [class]="{'access-active' : item.active}" class="item" *ngFor="let item of queues">
+                                    <i *ngIf="item.active" class="fas fa-check"></i>
+                                    <span>{{item.queue_name}}</span>
+                                </button>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

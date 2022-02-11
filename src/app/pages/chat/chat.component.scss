@@ -1,0 +1,392 @@
+.main-container {
+    width: 200vh;
+
+    left: 65px;
+
+    .main-content {
+        overflow: hidden;
+        display: flex;
+        flex-direction: row;
+    }
+}
+
+#chats {
+    height: 100%;
+
+    box-shadow: 3px 0px 3px rgba(0, 0, 0, 0.199);
+
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+
+    .header {
+        width: 100%;
+    }
+
+    .nav {
+        min-width: 300px;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 1em;
+
+        .active-div {
+            width: 40px;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+
+            #archived {
+                width: 0px;
+
+                opacity: 0%;
+
+                overflow: hidden;
+                padding: 0%;
+            }
+        }
+
+        button {
+            width: 40px;
+            height: 40px;
+
+            border-radius: 100px;
+
+            position: relative;
+
+            .account {
+                width: 20px;
+                height: 20px;
+
+                background: rgba(255, 255, 255, 0.808);
+                box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.425);
+
+                border-radius: 100px;
+
+                font-size: 10px;
+
+                position: absolute;
+                top: -2px;
+                right: -5px;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .active {
+                background: #00A8E6;
+                color: white;
+            }
+
+            .active-agent {
+                width: 10px;
+                height: 10px;
+
+                background: #00A8E6;
+
+                border-radius: 100px;
+
+                position: absolute;
+                top: 2px;
+                right: 2px;
+            }
+        }
+
+        .btn {
+            background: transparent;
+
+            border-bottom: 1px solid rgba(0, 0, 0, 0.096);
+
+            i {
+                color: rgba(0, 0, 0, 0.774);
+                font-size: 15px;
+            }
+        }
+
+        .option-primary {
+            background: rgba(226, 226, 226, 0.109);
+            box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.164);
+        }
+
+        .active-mail-box,
+        .active-active,
+        .active-closed,
+        .active-agent,
+        .active-new,
+        .active-archived {
+            box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.096);
+
+            i {
+                color: white;
+            }
+        }
+
+        .active-mail-box {
+            background: linear-gradient(135deg, #ff6b00, #ff6a00aa);
+        }
+
+        .active-div-show {
+            width: 80px;
+
+            background: linear-gradient(135deg, #a7a7a72c, #66666625);
+
+            border-radius: 100px;
+
+            overflow: hidden;
+
+            #active {
+                border-top-right-radius: 0px;
+                border-bottom-right-radius: 0px;
+            }
+
+            #archived {
+                width: 40px;
+
+                opacity: 100%;
+
+                border-top-left-radius: 0px;
+                border-bottom-left-radius: 0px;
+            }
+        }
+
+        .active-active {
+            background: linear-gradient(135deg, #0071bc59, #1363AD);
+        }
+
+        .active-archived {
+            background: linear-gradient(135deg, #0071bc31, #0071bc4f);
+        }
+
+        .active-closed {
+            background: linear-gradient(135deg, #00a9e64f, #00a8e6);
+        }
+
+        .active-agent {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.144), rgba(0, 0, 0, 0.377));
+        }
+
+        .active-new {
+            background: linear-gradient(135deg, #ffc92669, #ffc926);
+        }
+    }
+
+    .list {
+        width: 100%;
+        height: 100%;
+
+        position: relative;
+
+        overflow-y: scroll;
+
+        .item {
+            width: 100%;
+            height: 60px;
+
+            border-bottom: 1px solid rgba(0, 0, 0, 0.205);
+
+            cursor: pointer;
+
+            padding: 10px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.5em;
+
+            &:hover {
+                background: rgba(223, 223, 223, 0.144);
+                box-shadow: 0px 10px 10px rgba(158, 158, 158, 0.233);
+
+                border-bottom: 1px solid transparent;
+                border-bottom-left-radius: 10px;
+                border-bottom-right-radius: 10px;
+            }
+
+            .data {
+                width: 180px;
+
+                display: flex;
+                flex-direction: column;
+                gap: 0.2em;
+
+                small,
+                span {
+                    width: 100%;
+
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+
+                    i {
+                        color: #1363AD;
+                    }
+                }
+
+                .customerName {
+                    font-size: 15px;
+                    font-weight: 900;
+                }
+
+                .subject {
+                    font-size: 13px;
+                    color: rgba(0, 0, 0, 0.596);
+                }
+            }
+
+            .info {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 0.5em;
+
+                .new-messages {
+                    width: 20px;
+                    height: 20px;
+
+                    background: #0072bc;
+                    box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.178);
+                    color: white;
+
+                    border-radius: 100px;
+
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+        }
+    }
+}
+
+#userList {
+    width: 100%;
+
+    background: #FAFAFA;
+
+    border-top: 1px solid rgba(0, 0, 0, 0.096);
+
+    position: absolute;
+    top: 0%;
+    left: 0%;
+
+    padding: 5px;
+    overflow: hidden;
+
+    .userList-nav {
+        width: 100%;
+
+        margin-top: 10px;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 1em;
+
+        button {
+            width: 35px;
+            height: 35px;
+
+            border-radius: 10px;
+        }
+
+        .btn {
+            background: transparent;
+
+            border: 1px solid rgba(0, 0, 0, 0.096);
+
+            i {
+                color: rgba(0, 0, 0, 0.774);
+                font-size: 15px;
+            }
+        }
+
+        .active-user-customer,
+        .active-user-agent {
+            box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.096);
+
+            i {
+                color: white;
+            }
+        }
+
+        .active-user-customer {
+            background: #1363AD;
+        }
+
+        .active-user-agent {
+            background: #0072bc;
+        }
+    }
+
+    .searcher {
+        margin-top: 10px;
+
+        .searcher-list {
+            .item {
+                height: 40px;
+
+                cursor: pointer;
+                
+                justify-content: flex-start;
+                gap: 0em;
+
+                span {
+                    font-weight: 100;
+                }
+
+                .fa-user {
+                    color: #0072bc;
+                }
+
+                .fa-user-tie {
+                    color: #00A8E6;
+                }
+            }
+        }
+    }
+
+    .u-list {
+        height: 75%;
+        margin-top: 10px;
+
+        overflow: auto;
+
+        .item {
+            height: 40px;
+
+            small {
+                width: 10px;
+                height: 10px;
+
+                background: #1363AD;
+
+                border-radius: 100px;
+            }
+        }
+    }
+}
+
+.contact-show {
+    height: 100%;
+
+    opacity: 100%;
+}
+
+.contact-hide {
+    height: 0%;
+
+    opacity: 0%;
+}
+
+#messages {
+    width: 100%;
+    height: 100%;
+}
